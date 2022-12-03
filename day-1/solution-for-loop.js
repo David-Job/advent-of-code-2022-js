@@ -6,28 +6,27 @@ var data =
   .toString()
   .split('\n');
 
-var firstPlaceCount = 0;
-var secondPlaceCount = 0;
-var thirdPlaceCount = 0;
+var topThreeTotals = [0, 0, 0];
 var currentCount = 0;
 
 for (var calorieCount of data) {
   if (calorieCount) {
     currentCount += Number(calorieCount);
   } else {
-    if (currentCount > firstPlaceCount) {
-      thirdPlaceCount = secondPlaceCount;
-      secondPlaceCount = firstPlaceCount;
-      firstPlaceCount = currentCount;
-    } else if (currentCount > secondPlaceCount) {
-      thirdPlaceCount = secondPlaceCount;
-      secondPlaceCount = currentCount;
-    } else if (currentCount > thirdPlaceCount) {
-      thirdPlaceCount = currentCount;
+    if (currentCount > topThreeTotals[0]) {
+      topThreeTotals.splice(0, 0, currentCount);
+      topThreeTotals.pop();
+    } else if (currentCount > topThreeTotals[1]) {
+      topThreeTotals.splice(1, 0, currentCount);
+      topThreeTotals.pop();
+    } else if (currentCount > topThreeTotals[2]) {
+      topThreeTotals[2] = currentCount;
     }
     currentCount = 0;
   }
 }
 
-console.log(`Highest total is ${firstPlaceCount}`);
-console.log(`Sum of top three totals is ${firstPlaceCount + secondPlaceCount + thirdPlaceCount}`);
+const topThreeSum = topThreeTotals[0] + topThreeTotals[1] + topThreeTotals[2];
+
+console.log(`Highest total is ${topThreeTotals[0]}`);
+console.log(`Sum of top three totals is ${topThreeSum}`);
